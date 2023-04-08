@@ -34,8 +34,20 @@ export class SmtpDriver {
    *
    * @param options {any}
    */
-  public constructor(options: SMTPTransport.Options) {
+  public constructor(
+    options: SMTPTransport.Options,
+    config: any
+  ) {
     this.message = {}
+
+    if(config.from) {
+      this.message.from = config.from
+    }
+
+    if (config.replyTo) {
+      this.message.replyTo = config.replyTo
+    }
+
     this.transport = createTransport(options)
     this.transport.use('compile', markdown())
   }
@@ -51,7 +63,9 @@ export class SmtpDriver {
    * Define mail sender.
    */
   public from(from: string): SmtpDriver {
-    this.message.from = from
+    if (!this.message.from) {
+      this.message.from = from
+    }
 
     return this
   }
@@ -99,7 +113,9 @@ export class SmtpDriver {
    * Define mail reply to.
    */
   public replyTo(replyTo: string): SmtpDriver {
-    this.message.replyTo = replyTo
+    if (!this.message.replyTo) {
+      this.message.replyTo = replyTo
+    }
 
     return this
   }
