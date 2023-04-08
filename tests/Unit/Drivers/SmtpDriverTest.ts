@@ -147,4 +147,33 @@ export default class SmtpDriverTest extends BaseTest {
     assert.deepEqual(result.response, '250 OK: message queued')
     assert.deepEqual(result.envelope, { from: 'no-reply@athenna.io', to: ['lenon@athenna.io'] })
   }
+
+  @Test()
+  public async shouldSetReplyToField({ assert }: TestContext) {
+    const replyTo = 'no-reply@athenna.io'
+    const result = await Mail.from('robson@athenna.io')
+      .to('lenon@athenna.io')
+      .subject('Hello from Athenna!')
+      .replyTo(replyTo)
+      .send()
+
+    assert.deepEqual(result.response, '250 OK: message queued')
+    assert.deepEqual(result.envelope, {
+      from: 'robson@athenna.io',
+      to: ['lenon@athenna.io'],
+      replyTo: [replyTo],
+    })
+  }
+
+  @Test()
+  public async shouldSetFromField({ assert }: TestContext) {
+    const from = 'robson@athenna.io'
+    const result = await Mail.from(from)
+      .to('lenon@athenna.io')
+      .subject('Hello from Athenna!')
+      .send()
+
+    assert.deepEqual(result.response, '250 OK: message queued')
+    assert.deepEqual(result.envelope, { from: from, to: ['lenon@athenna.io'] })
+  }
 }
