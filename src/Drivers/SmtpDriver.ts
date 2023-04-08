@@ -51,7 +51,9 @@ export class SmtpDriver {
    * Define mail sender.
    */
   public from(from: string): SmtpDriver {
-    this.message.from = from
+    if (!this.message.from) {
+      this.message.from = from
+    }
 
     return this
   }
@@ -99,7 +101,9 @@ export class SmtpDriver {
    * Define mail reply to.
    */
   public replyTo(replyTo: string): SmtpDriver {
-    this.message.replyTo = replyTo
+    if (!this.message.replyTo) {
+      this.message.replyTo = replyTo
+    }
 
     return this
   }
